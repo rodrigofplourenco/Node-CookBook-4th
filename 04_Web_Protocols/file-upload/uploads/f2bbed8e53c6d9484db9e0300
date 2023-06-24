@@ -1,0 +1,21 @@
+a tabela frame_shape agora chama-se glasses_lens, a nova frame_shape tem outro proposito: indicar o formato físico aproximado de uma armação
+
+a tabela customer foi removida, esta foi substituida pelo campo reference a ser introduzido manualmente pelo técnico que estiver a fazer a encomenda (cleinte diz que não quer ficar com informação sobre o cliente final, isso "pertence" ao logista)
+	
+a inserção de uma encomenda pode falhar se o utilizador introduzir uma referencia ja utilizada anteriormente
+lens.keep_in_stock agora chama-se lens.kept_in_stock
+a inforamção de um item da encomenda encontra-se centralizado numa tabela: order_glasses
+	esta table pode albergar os 3 tipos de encomenda actuais, bem como a futura venda de armações apenas
+	se a encomenda for de lentes em bulk apenas os IDs right_lens_sku_id e/ou left_lens_sku_id estarão preenchidos
+	se a encomenda for de lentes biseladas os IDs mencionados no ponto acima bem como o lens_shape_id estarão preenchidos
+	se a encomenda for de lentes com armação os IDs mencionados nos ponto acima bem como o glasses_frame_id estarão preenchidos
+		sanity check: o lens_shape_id e o glasses_frame_id deverão de ter o mesmo valor nesta situação
+	
+futuramente, se a encomenda for apenas de uma armação apenas o glasses_frame_id estará preenchido
+	sanity check (pré): não deixar criar uma encomenda que não tenho nenhum produto associado (pelo menos uma lente para um dos lados deve ser comprada)
+	
+tanto os preços de compra como de venda das lentes estarão disponíveis pra que fizer e visualizar as encomendas
+	na criação da encomenda copiar o valor dos preços dos items, como acontecia antes, para a tabelas dos produtos das encomendas a fim de impedir que mudanças futuras de preços alterem os valores de faturação prévios
+as encomendas agora teem mais um estado intermedio: ready -  indicando que o seu preparamento acabou e que estão prontas a ser enviadas para o requerente
+grande parte das entidades na base de dados teem um campo a indicar se estão activas ou não
+	preocupação apenas para  interface, no entanto durante a criação de uma encomenda o backend deverá certificar-se que não é possivel utilizar produtos desabilitados ou de fabricantes desabilitados

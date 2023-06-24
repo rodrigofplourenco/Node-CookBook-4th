@@ -1,0 +1,147 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node
+{
+  int data;
+  Node *link;
+};
+
+Node *head;
+
+void insertNodeAtEnd(int data)
+{
+  Node *newNode = new Node();
+  newNode->data = data;
+  newNode->link = NULL;
+
+  Node *iterator = head;
+
+  while (iterator->link != NULL)
+  {
+    iterator = iterator->link;
+  }
+
+  iterator->link = newNode;
+}
+
+void insertNodeAtStart(int data)
+{
+  Node *newNode = new Node();
+  newNode->data = data;
+  newNode->link = head;
+
+  head = newNode;
+}
+
+void insertNodeAtNth(int data, int nTh)
+{
+  Node *newNode = new Node();
+  newNode->data = data;
+  newNode->link = NULL;
+
+  if (nTh == 0)
+  {
+    newNode->link = head;
+    head = newNode;
+
+    return;
+  }
+
+  Node *iterator = head;
+
+  for (int i = 0; i < nTh - 1; i++)
+  {
+    iterator = iterator->link;
+  }
+
+  newNode->link = iterator->link;
+  iterator->link = newNode;
+}
+
+void removeNodeAtNth(int nTh)
+{
+  Node *tempHead = head;
+
+  if (nTh == 0)
+  {
+    head = tempHead->link;
+
+    free(tempHead);
+
+    return;
+  }
+
+  for (int i = 0; i < nTh - 1; i++)
+  {
+    tempHead = tempHead->link;
+  }
+
+  Node *tempNextNode = tempHead->link;
+  tempHead->link = tempNextNode->link;
+
+  free(tempNextNode);
+}
+
+void reverseNodesLooping()
+{
+  Node *prevNode = NULL;
+  Node *currNode = head;
+  Node *nextNode = NULL;
+
+  while (currNode != NULL)
+  {
+    nextNode = currNode->link;
+    currNode->link = prevNode;
+
+    prevNode = currNode;
+    currNode = nextNode;
+  }
+
+  head = prevNode;
+}
+
+void printAllNodesLooping()
+{
+  Node *iterator = head;
+
+  while (iterator != NULL)
+  {
+    cout << iterator->data << endl;
+    iterator = iterator->link;
+  }
+}
+
+void printAllNodesWithRecursion(Node *head)
+{
+  if (head == NULL)
+    return;
+
+  cout << head->data << endl;
+
+  printAllNodesWithRecursion(head->link);
+}
+
+int main()
+{
+  insertNodeAtStart(2);
+
+  insertNodeAtEnd(4);
+
+  insertNodeAtNth(3, 1);
+  insertNodeAtNth(5, 2);
+
+  removeNodeAtNth(2);
+  removeNodeAtNth(0);
+
+  insertNodeAtEnd(5);
+  insertNodeAtEnd(6);
+
+  reverseNodesLooping();
+
+  // printAllNodesLooping();
+  printAllNodesWithRecursion(head);
+
+  return 0;
+}
